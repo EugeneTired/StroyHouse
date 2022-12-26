@@ -1,0 +1,12 @@
+﻿<Application x:Class="ВПФки.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ВПФки"
+             StartupUri="Forms/MainWindow.xaml">
+    <Application.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="verdana"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </Application.Resources> 
+</Application>

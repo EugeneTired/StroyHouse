@@ -1,0 +1,816 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище KP_StroyMatModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="IDcateg" />
+          </Key>
+          <Property Name="IDcateg" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="IDord" />
+          </Key>
+          <Property Name="IDord" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDuser" Type="int" />
+          <Property Name="IDship" Type="int" />
+          <Property Name="SaleDate" Type="date" Nullable="false" />
+          <Property Name="ShipDate" Type="date" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="IDprod" />
+          </Key>
+          <Property Name="IDprod" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Descr" Type="text" />
+          <Property Name="IDcateg" Type="int" />
+          <Property Name="IDsup" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="decimal" Precision="18" Scale="1" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IDunit" Type="int" Nullable="false" />
+          <Property Name="Image" Type="image" />
+        </EntityType>
+        <EntityType Name="ProOrd">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDprod" Type="int" Nullable="false" />
+          <Property Name="IDord" Type="int" Nullable="false" />
+          <Property Name="AmountOrd" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProWare">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDprod" Type="int" />
+          <Property Name="IDware" Type="int" />
+          <Property Name="AmountWare" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="IDrole" />
+          </Key>
+          <Property Name="IDrole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shipment">
+          <Key>
+            <PropertyRef Name="IDship" />
+          </Key>
+          <Property Name="IDship" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShipType" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="IDsup" />
+          </Key>
+          <Property Name="IDsup" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Phone" Type="int" />
+        </EntityType>
+        <EntityType Name="Units">
+          <Key>
+            <PropertyRef Name="IDunit" />
+          </Key>
+          <Property Name="IDunit" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="IDus" />
+          </Key>
+          <Property Name="IDus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Patron" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Role" Type="int" />
+        </EntityType>
+        <EntityType Name="UserExtraData">
+          <Key>
+            <PropertyRef Name="IDuser" />
+          </Key>
+          <Property Name="IDuser" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mail" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="WareHouse">
+          <Key>
+            <PropertyRef Name="IDware" />
+          </Key>
+          <Property Name="IDware" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Addres" Type="nvarchar" MaxLength="40" />
+        </EntityType>
+        <Association Name="FK__Order__IDship__44FF419A">
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipment">
+              <PropertyRef Name="IDship" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDship" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProOrd__IDord__47DBAE45">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="ProOrd" Type="Self.ProOrd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="IDord" />
+            </Principal>
+            <Dependent Role="ProOrd">
+              <PropertyRef Name="IDord" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProOrd__IDprod__46E78A0C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProOrd" Type="Self.ProOrd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="IDprod" />
+            </Principal>
+            <Dependent Role="ProOrd">
+              <PropertyRef Name="IDprod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProWare__IDprod__4BAC3F29">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ProWare" Type="Self.ProWare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="IDprod" />
+            </Principal>
+            <Dependent Role="ProWare">
+              <PropertyRef Name="IDprod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProWare__IDware__4CA06362">
+          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="0..1" />
+          <End Role="ProWare" Type="Self.ProWare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDware" />
+            </Principal>
+            <Dependent Role="ProWare">
+              <PropertyRef Name="IDware" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDunit">
+          <End Role="Units" Type="Self.Units" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Units">
+              <PropertyRef Name="IDunit" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IDunit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IDus" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDuser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="IDcateg" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IDcateg" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Product1" Type="Self.Product" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="IDprod" />
+            </Principal>
+            <Dependent Role="Product1">
+              <PropertyRef Name="IDprod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="IDsup" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IDsup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserExtraData_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserExtraData" Type="Self.UserExtraData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IDus" />
+            </Principal>
+            <Dependent Role="UserExtraData">
+              <PropertyRef Name="IDuser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PK_Role_User">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="IDrole" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище KP_StroyMatModelContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProOrd" EntityType="Self.ProOrd" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProWare" EntityType="Self.ProWare" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shipment" EntityType="Self.Shipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserExtraData" EntityType="Self.UserExtraData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WareHouse" EntityType="Self.WareHouse" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Order__IDship__44FF419A" Association="Self.FK__Order__IDship__44FF419A">
+            <End Role="Shipment" EntitySet="Shipment" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProOrd__IDord__47DBAE45" Association="Self.FK__ProOrd__IDord__47DBAE45">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="ProOrd" EntitySet="ProOrd" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProOrd__IDprod__46E78A0C" Association="Self.FK__ProOrd__IDprod__46E78A0C">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProOrd" EntitySet="ProOrd" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProWare__IDprod__4BAC3F29" Association="Self.FK__ProWare__IDprod__4BAC3F29">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProWare" EntitySet="ProWare" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProWare__IDware__4CA06362" Association="Self.FK__ProWare__IDware__4CA06362">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="ProWare" EntitySet="ProWare" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDunit" Association="Self.FK_IDunit">
+            <End Role="Units" EntitySet="Units" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Product" Association="Self.FK_Product_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Product1" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Suppliers" Association="Self.FK_Product_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserExtraData_User" Association="Self.FK_UserExtraData_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserExtraData" EntitySet="UserExtraData" />
+          </AssociationSet>
+          <AssociationSet Name="PK_Role_User" Association="Self.PK_Role_User">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KP_StroyMatModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="IDcateg" />
+          </Key>
+          <Property Name="IDcateg" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Category" FromRole="Category" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="IDord" />
+          </Key>
+          <Property Name="IDord" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDuser" Type="Int32" />
+          <Property Name="IDship" Type="Int32" />
+          <Property Name="SaleDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ShipDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Shipment" Relationship="Self.FK__Order__IDship__44FF419A" FromRole="Order" ToRole="Shipment" />
+          <NavigationProperty Name="ProOrd" Relationship="Self.FK__ProOrd__IDord__47DBAE45" FromRole="Order" ToRole="ProOrd" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Order_User" FromRole="Order" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="IDprod" />
+          </Key>
+          <Property Name="IDprod" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descr" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IDcateg" Type="Int32" />
+          <Property Name="IDsup" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Decimal" Precision="18" Scale="1" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IDunit" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Product_Category" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="ProOrd" Relationship="Self.FK__ProOrd__IDprod__46E78A0C" FromRole="Product" ToRole="ProOrd" />
+          <NavigationProperty Name="ProWare" Relationship="Self.FK__ProWare__IDprod__4BAC3F29" FromRole="Product" ToRole="ProWare" />
+          <NavigationProperty Name="Units" Relationship="Self.FK_IDunit" FromRole="Product" ToRole="Units" />
+          <NavigationProperty Name="Suppliers" Relationship="Self.FK_Product_Suppliers" FromRole="Product" ToRole="Suppliers" />
+        </EntityType>
+        <EntityType Name="ProOrd">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDprod" Type="Int32" Nullable="false" />
+          <Property Name="IDord" Type="Int32" Nullable="false" />
+          <Property Name="AmountOrd" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__ProOrd__IDord__47DBAE45" FromRole="ProOrd" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__ProOrd__IDprod__46E78A0C" FromRole="ProOrd" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="ProWare">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDprod" Type="Int32" />
+          <Property Name="IDware" Type="Int32" />
+          <Property Name="AmountWare" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__ProWare__IDprod__4BAC3F29" FromRole="ProWare" ToRole="Product" />
+          <NavigationProperty Name="WareHouse" Relationship="Self.FK__ProWare__IDware__4CA06362" FromRole="ProWare" ToRole="WareHouse" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="IDrole" />
+          </Key>
+          <Property Name="IDrole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.PK_Role_User" FromRole="Roles" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Shipment">
+          <Key>
+            <PropertyRef Name="IDship" />
+          </Key>
+          <Property Name="IDship" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShipType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__Order__IDship__44FF419A" FromRole="Shipment" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="IDsup" />
+          </Key>
+          <Property Name="IDsup" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Suppliers" FromRole="Suppliers" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Units">
+          <Key>
+            <PropertyRef Name="IDunit" />
+          </Key>
+          <Property Name="IDunit" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_IDunit" FromRole="Units" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="IDus" />
+          </Key>
+          <Property Name="IDus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patron" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_User" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="Roles" Relationship="Self.PK_Role_User" FromRole="User" ToRole="Roles" />
+          <NavigationProperty Name="UserExtraData" Relationship="Self.FK_UserExtraData_User" FromRole="User" ToRole="UserExtraData" />
+        </EntityType>
+        <EntityType Name="UserExtraData">
+          <Key>
+            <PropertyRef Name="IDuser" />
+          </Key>
+          <Property Name="IDuser" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserExtraData_User" FromRole="UserExtraData" ToRole="User" />
+        </EntityType>
+        <EntityType Name="WareHouse">
+          <Key>
+            <PropertyRef Name="IDware" />
+          </Key>
+          <Property Name="IDware" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Addres" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProWare" Relationship="Self.FK__ProWare__IDware__4CA06362" FromRole="WareHouse" ToRole="ProWare" />
+        </EntityType>
+        <Association Name="FK_Product_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="IDcateg" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IDcateg" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__IDship__44FF419A">
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipment">
+              <PropertyRef Name="IDship" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDship" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProOrd__IDord__47DBAE45">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="ProOrd" Type="Self.ProOrd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="IDord" />
+            </Principal>
+            <Dependent Role="ProOrd">
+              <PropertyRef Name="IDord" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IDus" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDuser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProOrd__IDprod__46E78A0C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProOrd" Type="Self.ProOrd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="IDprod" />
+            </Principal>
+            <Dependent Role="ProOrd">
+              <PropertyRef Name="IDprod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProWare__IDprod__4BAC3F29">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ProWare" Type="Self.ProWare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="IDprod" />
+            </Principal>
+            <Dependent Role="ProWare">
+              <PropertyRef Name="IDprod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDunit">
+          <End Role="Units" Type="Self.Units" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Units">
+              <PropertyRef Name="IDunit" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IDunit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="IDsup" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IDsup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProWare__IDware__4CA06362">
+          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="0..1" />
+          <End Role="ProWare" Type="Self.ProWare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDware" />
+            </Principal>
+            <Dependent Role="ProWare">
+              <PropertyRef Name="IDware" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PK_Role_User">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="IDrole" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserExtraData_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserExtraData" Type="Self.UserExtraData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IDus" />
+            </Principal>
+            <Dependent Role="UserExtraData">
+              <PropertyRef Name="IDuser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StroyMatEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="Self.Category" />
+          <EntitySet Name="Order" EntityType="Self.Order" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="ProOrd" EntityType="Self.ProOrd" />
+          <EntitySet Name="ProWare" EntityType="Self.ProWare" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Shipment" EntityType="Self.Shipment" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" />
+          <EntitySet Name="Units" EntityType="Self.Units" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="UserExtraData" EntityType="Self.UserExtraData" />
+          <EntitySet Name="WareHouse" EntityType="Self.WareHouse" />
+          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__IDship__44FF419A" Association="Self.FK__Order__IDship__44FF419A">
+            <End Role="Shipment" EntitySet="Shipment" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProOrd__IDord__47DBAE45" Association="Self.FK__ProOrd__IDord__47DBAE45">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="ProOrd" EntitySet="ProOrd" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProOrd__IDprod__46E78A0C" Association="Self.FK__ProOrd__IDprod__46E78A0C">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProOrd" EntitySet="ProOrd" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProWare__IDprod__4BAC3F29" Association="Self.FK__ProWare__IDprod__4BAC3F29">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProWare" EntitySet="ProWare" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDunit" Association="Self.FK_IDunit">
+            <End Role="Units" EntitySet="Units" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Suppliers" Association="Self.FK_Product_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProWare__IDware__4CA06362" Association="Self.FK__ProWare__IDware__4CA06362">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="ProWare" EntitySet="ProWare" />
+          </AssociationSet>
+          <AssociationSet Name="PK_Role_User" Association="Self.PK_Role_User">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserExtraData_User" Association="Self.FK_UserExtraData_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserExtraData" EntitySet="UserExtraData" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище KP_StroyMatModelContainer" CdmEntityContainer="StroyMatEntities">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="IDcateg" ColumnName="IDcateg" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="IDord" ColumnName="IDord" />
+                <ScalarProperty Name="IDuser" ColumnName="IDuser" />
+                <ScalarProperty Name="IDship" ColumnName="IDship" />
+                <ScalarProperty Name="SaleDate" ColumnName="SaleDate" />
+                <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="IDprod" ColumnName="IDprod" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Descr" ColumnName="Descr" />
+                <ScalarProperty Name="IDcateg" ColumnName="IDcateg" />
+                <ScalarProperty Name="IDsup" ColumnName="IDsup" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="IDunit" ColumnName="IDunit" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProOrd">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.ProOrd">
+              <MappingFragment StoreEntitySet="ProOrd">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDprod" ColumnName="IDprod" />
+                <ScalarProperty Name="IDord" ColumnName="IDord" />
+                <ScalarProperty Name="AmountOrd" ColumnName="AmountOrd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProWare">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.ProWare">
+              <MappingFragment StoreEntitySet="ProWare">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDprod" ColumnName="IDprod" />
+                <ScalarProperty Name="IDware" ColumnName="IDware" />
+                <ScalarProperty Name="AmountWare" ColumnName="AmountWare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="IDrole" ColumnName="IDrole" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shipment">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Shipment">
+              <MappingFragment StoreEntitySet="Shipment">
+                <ScalarProperty Name="IDship" ColumnName="IDship" />
+                <ScalarProperty Name="ShipType" ColumnName="ShipType" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Suppliers">
+              <MappingFragment StoreEntitySet="Suppliers">
+                <ScalarProperty Name="IDsup" ColumnName="IDsup" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Units">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.Units">
+              <MappingFragment StoreEntitySet="Units">
+                <ScalarProperty Name="IDunit" ColumnName="IDunit" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IDus" ColumnName="IDus" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Patron" ColumnName="Patron" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserExtraData">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.UserExtraData">
+              <MappingFragment StoreEntitySet="UserExtraData">
+                <ScalarProperty Name="IDuser" ColumnName="IDuser" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WareHouse">
+            <EntityTypeMapping TypeName="KP_StroyMatModel.WareHouse">
+              <MappingFragment StoreEntitySet="WareHouse">
+                <ScalarProperty Name="IDware" ColumnName="IDware" />
+                <ScalarProperty Name="Addres" ColumnName="Addres" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
